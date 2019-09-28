@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
-                features={"src/test/resources/featurefile/abc.feature"}
-
+                features={"src/test/resources/featurefile/Crud_Employee.feature"}
+                //,tags={"~@ignore"}
                 )
 public class Runner {}

@@ -10,23 +10,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import utilities.RestUtilities;
-import utilities.commonMethods;
-
+import utilities.CommonMethods;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
-public class TestCase1 {
+public class Crud_Employee_TestCases {
 
   //  RequestSpecification request;
     Response response;
 
-    private static final Logger logger = LogManager.getLogger(TestCase1.class);
+    private static final Logger logger = LogManager.getLogger(Crud_Employee_TestCases.class);
 
     @Given("perform a POST request to create user")
     public void postRequestToServer() throws Exception {
 
-        String jsonFile = commonMethods.loadFile("request/createuser.json");
+        String jsonFile = CommonMethods.loadFile("request/createuser.json");
         response = RestUtilities.postRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.CREATE_USER_ENDPOINT,jsonFile);
         logger.info("Response is " + response);
         System.out.println(response.getBody().asString());
@@ -43,7 +41,7 @@ public class TestCase1 {
 
         String id = response.jsonPath().get("id");
         File proDir = new File("src");
-        commonMethods.writeOnFile(proDir+"\\test\\resources\\request\\storevalue2.txt",id);
+        CommonMethods.writeOnFile(proDir+"\\test\\resources\\request\\storevalue2.txt",id);
         System.out.println("id is "+id);
         Assert.assertEquals(name,response.jsonPath().getString("name"));
         Assert.assertEquals(salary,response.jsonPath().getString("salary"));
@@ -54,7 +52,7 @@ public class TestCase1 {
     public void perfomAGetRequestToGetUserById() throws Throwable {
 
         File proDir = new File("src");
-        String id = commonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
+        String id = CommonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
         response = RestUtilities.getRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.GET_USER_ENDPOINT+id);
 
     }
@@ -70,7 +68,7 @@ public class TestCase1 {
     public void perfom_a_Delete_request_by_giving_user_id() throws Exception {
 
         File proDir = new File("src");
-        String id = commonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
+        String id = CommonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
         response = RestUtilities.deleteRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.DELETE_USER_ENDPOINT+id);
 
     }

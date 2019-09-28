@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public class commonMethods {
+public class CommonMethods {
 
 
 
     public static String loadFile(String path) throws IOException {
-        return IOUtils.toString(commonMethods.class.getClassLoader().getResourceAsStream(path),
+        return IOUtils.toString(CommonMethods.class.getClassLoader().getResourceAsStream(path),
                 Charset.forName("UTF-8"));
     }
 
