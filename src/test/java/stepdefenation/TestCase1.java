@@ -2,24 +2,19 @@ package stepdefenation;
 
 import RestService.ServiceBaseUrl;
 import RestService.URLEndPoints;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.response.Response;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import sun.invoke.empty.Empty;
 import utilities.RestUtilities;
 import utilities.commonMethods;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
 public class TestCase1 {
 
@@ -32,21 +27,21 @@ public class TestCase1 {
     public void postRequestToServer() throws Exception {
 
         String jsonFile = commonMethods.loadFile("request/createuser.json");
-        response = RestUtilities.postRequestWithHeaders(ServiceBaseUrl.BASE_URI+URLEndPoints.CREATE_USER_ENDPOINT,jsonFile);
+        response = RestUtilities.postRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.CREATE_USER_ENDPOINT,jsonFile);
         logger.info("Response is " + response);
         System.out.println(response.getBody().asString());
 
     }
 
     @When("^verify the status '(\\d+)'$")
-    public void verify_the_status(int arg1) {
-        // Write code here that turns the phrase above into concrete actions
-       Assert.assertEquals(response.getStatusCode(),arg1);
+    public void verify_the_status(int statusCode) {
+        Assert.assertEquals(response.getStatusCode(),statusCode);
     }
 
     @Then("^verify user is created with \"([^\"]*)\" \"([^\"]*)\" and \"([^\"]*)\"$")
     public void verify_user_is_created_with_and(String name,String salary,String age) throws IOException {
-       String id = response.jsonPath().get("id");
+
+        String id = response.jsonPath().get("id");
         File proDir = new File("src");
         commonMethods.writeOnFile(proDir+"\\test\\resources\\request\\storevalue2.txt",id);
         System.out.println("id is "+id);
@@ -57,27 +52,35 @@ public class TestCase1 {
 
     @Given("^perfom a get request to get user by id$")
     public void perfomAGetRequestToGetUserById() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         File proDir = new File("src");
         String id = commonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
         response = RestUtilities.getRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.GET_USER_ENDPOINT+id);
 
     }
 
-    @When("^verify the status '<code>'$")
-    public void verifyTheStatusCode(int arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        Assert.assertEquals(response.getStatusCode(),arg1);
-    }
-
-
 
     @Then("^verify user is exist with \"([^\"]*)\"$")
     public void verify_user_is_exist_with(String name) {
-        // Write code here that turns the phrase above into concrete actions
+
         Assert.assertEquals(name,response.jsonPath().getString("employee_name"));
     }
 
+    @Given("^perfom a Delete request by giving user id$")
+    public void perfom_a_Delete_request_by_giving_user_id() throws Exception {
+
+        File proDir = new File("src");
+        String id = commonMethods.readFromFile(proDir+"\\test\\resources\\request\\storevalue2.txt");
+        response = RestUtilities.deleteRequest(ServiceBaseUrl.BASE_URI+URLEndPoints.DELETE_USER_ENDPOINT+id);
+
+    }
+
+
+    @Then("^verify that user is successfully deleted and get \"([^\"]*)\" in response$")
+    public void verify_that_user_is_successfully_deleted_and_get_in_response(String message) {
+
+        Assert.assertTrue(response.getBody().asString().contains(message));
+    }
 
 
 }

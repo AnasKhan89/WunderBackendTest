@@ -31,8 +31,6 @@ public class commonMethods {
          String id = null;
         while (myScanner.hasNextLine()) {
               id = myScanner.nextLine();
-            //parse the string for your data and store it
-
         }
         return id;
     }

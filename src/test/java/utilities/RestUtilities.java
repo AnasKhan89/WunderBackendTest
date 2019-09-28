@@ -20,36 +20,18 @@ public class RestUtilities {
         return response;
     }
 
-    public Response postRequest(String url, String body) {
-        requestSpecification = RestAssured.with();
-        response = requestSpecification.contentType("Application/json").body(body).post(url);
-        return response;
-    }
-
-    public Response putRequest(String url, String body) {
-        requestSpecification = RestAssured.with();
-        response = requestSpecification.contentType("Application/json").body(body).put(url);
-        return response;
-    }
-
-    public static Response postRequestWithHeaders(String url, String body) throws Exception {
+    public static Response postRequest(String url, String body) throws Exception {
         requestSpecification = RestAssured.with();
         response = requestSpecification.contentType("application/json").body(body).post(url);
         return response;
     }
 
 
-    public Response putRequestWithHeaders(String url, String body, Map headerMap) throws Exception {
-        requestSpecification = RestAssured.with();
-        requestSpecification.headers(headerMap);
-        response = requestSpecification.contentType("Application/json").body(body).put(url);
-        return response;
-    }
 
-    public Response deleteRequestWithHeaders(String url, Map headerMap) throws Exception {
+
+    public static Response deleteRequest(String url) throws Exception {
         requestSpecification = RestAssured.with();
-        requestSpecification.headers(headerMap);
-        response = requestSpecification.contentType("Application/json").delete(url);
+        response = requestSpecification.delete(url);
         return response;
     }
 
